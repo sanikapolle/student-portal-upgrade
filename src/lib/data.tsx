@@ -80,8 +80,8 @@ function seed(): DB {
 
   return {
     users: [
-      { id: teacherId, email: "teacher@batchflow.app", full_name: "Riya Mehta", role: "teacher", avatar_url: null, subject: null, batch_id: null },
-      { id: studentUserId, email: "student@batchflow.app", full_name: "Aanya Kapoor", role: "student", avatar_url: null, subject: "Physics", batch_id: batchA.id },
+      { id: teacherId, email: "teacher@batchflow.app", full_name: "Riya Mehta", role: "teacher", avatar_url: null, subject: null, batch_id: null, contact: null, qualification: "M.Sc. Physics, B.Ed." },
+      { id: studentUserId, email: "student@batchflow.app", full_name: "Aanya Kapoor", role: "student", avatar_url: null, subject: "Physics", batch_id: batchA.id, contact: "+91 98765 43210", qualification: null },
     ],
     batches: [batchA, batchB, batchC],
     students: [
