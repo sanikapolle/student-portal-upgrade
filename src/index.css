@@ -2,95 +2,70 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Definition of the design system. All colors, gradients, fonts, etc should be defined here. 
-All colors MUST be HSL.
-*/
+/* BatchFlow design system — dark indigo + electric cyan glassmorphism. HSL only. */
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    --background: 230 35% 8%;
+    --foreground: 220 25% 97%;
 
-    --card: 0 0% 100%;
-    --card-foreground: 222.2 84% 4.9%;
+    --card: 232 30% 14%;
+    --card-foreground: 220 25% 97%;
 
-    --popover: 0 0% 100%;
-    --popover-foreground: 222.2 84% 4.9%;
+    --popover: 232 35% 11%;
+    --popover-foreground: 220 25% 97%;
 
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
+    --primary: 250 75% 65%;
+    --primary-foreground: 240 30% 8%;
 
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
+    --secondary: 232 30% 20%;
+    --secondary-foreground: 220 25% 97%;
 
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 215.4 16.3% 46.9%;
+    --muted: 232 25% 18%;
+    --muted-foreground: 225 15% 65%;
 
-    --accent: 210 40% 96.1%;
-    --accent-foreground: 222.2 47.4% 11.2%;
+    --accent: 188 90% 60%;
+    --accent-foreground: 230 35% 10%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 40% 98%;
+    --destructive: 0 75% 60%;
+    --destructive-foreground: 0 0% 98%;
 
-    --border: 214.3 31.8% 91.4%;
-    --input: 214.3 31.8% 91.4%;
-    --ring: 222.2 84% 4.9%;
+    --success: 152 70% 50%;
+    --success-foreground: 152 30% 10%;
 
-    --radius: 0.5rem;
+    --warning: 38 92% 60%;
+    --warning-foreground: 38 30% 10%;
 
-    --sidebar-background: 0 0% 98%;
+    --border: 230 20% 25%;
+    --input: 230 20% 22%;
+    --ring: 188 90% 60%;
 
-    --sidebar-foreground: 240 5.3% 26.1%;
+    --radius: 0.85rem;
 
-    --sidebar-primary: 240 5.9% 10%;
+    --sidebar-background: 232 35% 10%;
+    --sidebar-foreground: 220 25% 90%;
+    --sidebar-primary: 250 75% 65%;
+    --sidebar-primary-foreground: 240 30% 8%;
+    --sidebar-accent: 232 30% 18%;
+    --sidebar-accent-foreground: 220 25% 95%;
+    --sidebar-border: 230 20% 22%;
+    --sidebar-ring: 188 90% 60%;
 
-    --sidebar-primary-foreground: 0 0% 98%;
-
-    --sidebar-accent: 240 4.8% 95.9%;
-
-    --sidebar-accent-foreground: 240 5.9% 10%;
-
-    --sidebar-border: 220 13% 91%;
-
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Brand gradients */
+    --gradient-brand: linear-gradient(135deg, hsl(250 75% 65%) 0%, hsl(188 90% 60%) 100%);
+    --gradient-brand-soft: linear-gradient(135deg, hsl(250 75% 65% / 0.18) 0%, hsl(188 90% 60% / 0.18) 100%);
+    --gradient-bg:
+      radial-gradient(ellipse 70% 60% at 15% 10%, hsl(250 70% 25% / 0.55) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 60% at 90% 90%, hsl(188 80% 25% / 0.45) 0%, transparent 60%),
+      linear-gradient(180deg, hsl(232 35% 8%) 0%, hsl(232 40% 6%) 100%);
+    --shadow-glow: 0 10px 40px -10px hsl(250 75% 65% / 0.55);
+    --shadow-card: 0 8px 32px -8px hsl(0 0% 0% / 0.5);
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-
-    --primary: 210 40% 98%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-
-    --accent: 217.2 32.6% 17.5%;
-    --accent-foreground: 210 40% 98%;
-
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Same as root — app is dark-first */
+    --background: 230 35% 8%;
+    --foreground: 220 25% 97%;
   }
 }
 
@@ -99,7 +74,149 @@ All colors MUST be HSL.
     @apply border-border;
   }
 
+  /* Hide native cursor everywhere — custom cursor takes over */
+  html, body, *, *::before, *::after,
+  a, button, input, textarea, select, [role="button"] {
+    cursor: none !important;
+  }
+
   body {
     @apply bg-background text-foreground;
+    background: var(--gradient-bg);
+    background-attachment: fixed;
+    min-height: 100vh;
+    font-feature-settings: "cv11", "ss01";
   }
+
+  ::selection {
+    background: hsl(250 75% 65% / 0.45);
+    color: hsl(0 0% 100%);
+  }
+}
+
+@layer components {
+  .glass {
+    background: hsl(0 0% 100% / 0.04);
+    backdrop-filter: blur(20px) saturate(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(140%);
+    border: 1px solid hsl(0 0% 100% / 0.08);
+  }
+
+  .glass-card {
+    background: linear-gradient(135deg, hsl(0 0% 100% / 0.06), hsl(0 0% 100% / 0.02));
+    backdrop-filter: blur(24px) saturate(150%);
+    -webkit-backdrop-filter: blur(24px) saturate(150%);
+    border: 1px solid hsl(0 0% 100% / 0.08);
+    box-shadow: var(--shadow-card);
+  }
+
+  .gradient-text {
+    background: var(--gradient-brand);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+
+  .gradient-bg {
+    background: var(--gradient-brand);
+  }
+
+  .glow {
+    box-shadow: var(--shadow-glow);
+  }
+}
+
+/* ============== Custom Cursor ============== */
+.bf-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 9999;
+  mix-blend-mode: difference;
+  will-change: transform;
+}
+
+.bf-cursor__dot {
+  position: absolute;
+  top: -3px;
+  left: -3px;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: hsl(0 0% 100%);
+  transition: transform 0.18s ease, background-color 0.2s ease;
+}
+
+.bf-cursor__ring {
+  position: absolute;
+  top: -16px;
+  left: -16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1.5px solid hsl(0 0% 100% / 0.9);
+  transition: width 0.25s ease, height 0.25s ease, top 0.25s ease, left 0.25s ease,
+              border-color 0.25s ease, transform 0.18s ease, background-color 0.25s ease;
+}
+
+.bf-cursor.is-hover .bf-cursor__ring {
+  width: 52px;
+  height: 52px;
+  top: -26px;
+  left: -26px;
+  background: hsl(188 90% 60% / 0.18);
+  border-color: hsl(188 90% 60%);
+}
+
+.bf-cursor.is-down .bf-cursor__ring {
+  transform: scale(0.7);
+}
+
+/* Click-burst ripples (cycle through brand variants) */
+.bf-burst {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  animation: bfBurst 650ms ease-out forwards;
+}
+
+.bf-burst--ring { border: 2px solid hsl(188 90% 60%); }
+.bf-burst--solid { background: radial-gradient(circle, hsl(250 75% 65% / 0.6) 0%, transparent 70%); }
+.bf-burst--star { background: radial-gradient(circle, hsl(188 90% 60% / 0.55) 0%, transparent 65%); }
+.bf-burst--square {
+  border-radius: 6px;
+  border: 2px solid hsl(38 92% 60%);
+  transform: translate(-50%, -50%) rotate(45deg);
+  animation: bfBurstSquare 700ms ease-out forwards;
+}
+.bf-burst--double {
+  border: 2px solid hsl(0 75% 65%);
+  box-shadow: 0 0 0 6px hsl(0 75% 65% / 0.25);
+}
+
+@keyframes bfBurst {
+  0% { width: 6px; height: 6px; opacity: 1; }
+  100% { width: 90px; height: 90px; opacity: 0; }
+}
+
+@keyframes bfBurstSquare {
+  0% { width: 6px; height: 6px; opacity: 1; transform: translate(-50%, -50%) rotate(45deg) scale(1); }
+  100% { width: 80px; height: 80px; opacity: 0; transform: translate(-50%, -50%) rotate(135deg) scale(1); }
+}
+
+@keyframes float-slow {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-12px); }
+}
+.animate-float { animation: float-slow 6s ease-in-out infinite; }
+
+/* Hide custom cursor on touch devices */
+@media (hover: none) and (pointer: coarse) {
+  .bf-cursor, .bf-burst { display: none; }
+  html, body, *, *::before, *::after { cursor: auto !important; }
 }
