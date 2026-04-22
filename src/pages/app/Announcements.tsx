@@ -4,9 +4,10 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2, Megaphone } from "lucide-react";
+import { Plus, Pencil, Trash2, Megaphone, Sparkles, Loader2 } from "lucide-react";
 import { toast } from "sonner";
 import { useData, newId, type Announcement } from "@/lib/data";
+import { supabase } from "@/integrations/supabase/client";
 
 export default function Announcements() {
   const { db, role, update } = useData();
@@ -15,9 +16,38 @@ export default function Announcements() {
   const [editing, setEditing] = useState<Announcement | null>(null);
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [aiOpen, setAiOpen] = useState(false);
+  const [aiNote, setAiNote] = useState("");
+  const [aiLoading, setAiLoading] = useState(false);
 
   const openCreate = () => { setEditing(null); setTitle(""); setContent(""); setOpen(true); };
   const openEdit = (a: Announcement) => { setEditing(a); setTitle(a.title); setContent(a.content); setOpen(true); };
+
+  const draftWithAI = async () => {
+    const note = aiNote.trim();
+    if (!note) return toast.error("Type a rough note first");
+    setAiLoading(true);
+    try {
+      const { data, error } = await supabase.functions.invoke("draft-announcement", {
+        body: { note },
+      });
+      if (error) throw error;
+      if ((data as any)?.error) throw new Error((data as any).error);
+      const { title: t, content: c } = data as { title: string; content: string };
+      if (!t || !c) throw new Error("Empty AI response");
+      setTitle(t);
+      setContent(c);
+      setEditing(null);
+      setAiOpen(false);
+      setAiNote("");
+      setOpen(true);
+      toast.success("AI draft ready — review & post");
+    } catch (e: any) {
+      toast.error(e?.message ?? "Could not draft announcement");
+    } finally {
+      setAiLoading(false);
+    }
+  };
 
   const save = () => {
     if (!title.trim() || !content.trim()) return toast.error("Title & content required");
@@ -51,21 +81,69 @@ export default function Announcements() {
           <p className="text-muted-foreground text-sm mt-1">Post updates for everyone in your institute.</p>
         </div>
         {isTeacher && (
-          <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-              <Button onClick={openCreate} className="gradient-bg text-primary-foreground glow">
-                <Plus className="h-4 w-4 mr-2" /> New Announcement
-              </Button>
-            </DialogTrigger>
-            <DialogContent className="glass-card max-w-2xl">
-              <DialogHeader><DialogTitle>{editing ? "Edit Announcement" : "New Announcement"}</DialogTitle></DialogHeader>
-              <div className="space-y-4">
-                <div><Label>Title</Label><Input value={title} onChange={(e) => setTitle(e.target.value)} className="glass mt-1.5" /></div>
-                <div><Label>Content</Label><Textarea value={content} onChange={(e) => setContent(e.target.value)} className="glass mt-1.5" rows={8} /></div>
-              </div>
-              <DialogFooter><Button onClick={save} className="gradient-bg text-primary-foreground">{editing ? "Save" : "Post"}</Button></DialogFooter>
-            </DialogContent>
-          </Dialog>
+          <div className="flex flex-wrap gap-2">
+            <Dialog open={aiOpen} onOpenChange={(o) => { setAiOpen(o); if (!o) setAiNote(""); }}>
+              <DialogTrigger asChild>
+                <Button variant="outline" className="glass border-accent/40 hover:border-accent">
+                  <Sparkles className="h-4 w-4 mr-2 text-accent" /> AI Draft
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="glass-card max-w-xl">
+                <DialogHeader>
+                  <DialogTitle className="flex items-center gap-2">
+                    <Sparkles className="h-5 w-5 text-accent" /> AI Announcement Drafter
+                  </DialogTitle>
+                </DialogHeader>
+                <div className="space-y-3">
+                  <p className="text-sm text-muted-foreground">
+                    Type a rough note. AI will rewrite it into a clean, formal announcement for the notice board.
+                  </p>
+                  <div>
+                    <Label>Your rough note</Label>
+                    <Textarea
+                      value={aiNote}
+                      onChange={(e) => setAiNote(e.target.value)}
+                      placeholder='e.g. "test next Monday, syllabus chapter 4 and 5, bring calculator"'
+                      className="glass mt-1.5"
+                      rows={5}
+                      maxLength={2000}
+                      disabled={aiLoading}
+                    />
+                    <div className="text-xs text-muted-foreground mt-1 text-right">{aiNote.length}/2000</div>
+                  </div>
+                </div>
+                <DialogFooter>
+                  <Button
+                    onClick={draftWithAI}
+                    disabled={aiLoading || !aiNote.trim()}
+                    className="gradient-bg text-primary-foreground glow"
+                  >
+                    {aiLoading ? (
+                      <><Loader2 className="h-4 w-4 mr-2 animate-spin" /> Drafting…</>
+                    ) : (
+                      <><Sparkles className="h-4 w-4 mr-2" /> Generate draft</>
+                    )}
+                  </Button>
+                </DialogFooter>
+              </DialogContent>
+            </Dialog>
+
+            <Dialog open={open} onOpenChange={setOpen}>
+              <DialogTrigger asChild>
+                <Button onClick={openCreate} className="gradient-bg text-primary-foreground glow">
+                  <Plus className="h-4 w-4 mr-2" /> New Announcement
+                </Button>
+              </DialogTrigger>
+              <DialogContent className="glass-card max-w-2xl">
+                <DialogHeader><DialogTitle>{editing ? "Edit Announcement" : "New Announcement"}</DialogTitle></DialogHeader>
+                <div className="space-y-4">
+                  <div><Label>Title</Label><Input value={title} onChange={(e) => setTitle(e.target.value)} className="glass mt-1.5" /></div>
+                  <div><Label>Content</Label><Textarea value={content} onChange={(e) => setContent(e.target.value)} className="glass mt-1.5" rows={8} /></div>
+                </div>
+                <DialogFooter><Button onClick={save} className="gradient-bg text-primary-foreground">{editing ? "Save" : "Post"}</Button></DialogFooter>
+              </DialogContent>
+            </Dialog>
+          </div>
         )}
       </div>
 
