@@ -196,6 +196,6 @@
 
 /* Hide custom cursor on touch devices */
 @media (hover: none) and (pointer: coarse) {
-  .bf-cursor, .bf-burst { display: none; }
+  .bf-cursor, .bf-click-ring { display: none; }
   html, body, *, *::before, *::after { cursor: auto !important; }
 }
