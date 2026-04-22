@@ -198,6 +198,40 @@
   border: 2px solid hsl(0 75% 65%);
   box-shadow: 0 0 0 6px hsl(0 75% 65% / 0.25);
 }
+.bf-burst--triangle {
+  background: transparent;
+  border-left: 12px solid transparent;
+  border-right: 12px solid transparent;
+  border-bottom: 20px solid hsl(152 70% 55%);
+  border-radius: 0;
+  width: 0;
+  height: 0;
+  animation: bfBurstTriangle 750ms ease-out forwards;
+}
+.bf-burst--hexagon {
+  background: hsl(280 80% 65% / 0.25);
+  border: 2px solid hsl(280 80% 65%);
+  border-radius: 0;
+  clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+  animation: bfBurstHexagon 800ms ease-out forwards;
+}
+.bf-burst--sparkle {
+  background: radial-gradient(circle, hsl(38 92% 65% / 0.9) 0%, hsl(38 92% 65% / 0) 70%);
+  box-shadow: 0 0 24px hsl(38 92% 65% / 0.6);
+}
+
+.bf-spark {
+  position: fixed;
+  pointer-events: none;
+  z-index: 9998;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: hsl(38 92% 65%);
+  box-shadow: 0 0 8px hsl(38 92% 65%);
+  transform: translate(-50%, -50%);
+  animation: bfSpark 700ms ease-out forwards;
+}
 
 @keyframes bfBurst {
   0% { width: 6px; height: 6px; opacity: 1; }
@@ -207,6 +241,27 @@
 @keyframes bfBurstSquare {
   0% { width: 6px; height: 6px; opacity: 1; transform: translate(-50%, -50%) rotate(45deg) scale(1); }
   100% { width: 80px; height: 80px; opacity: 0; transform: translate(-50%, -50%) rotate(135deg) scale(1); }
+}
+
+@keyframes bfBurstTriangle {
+  0% { opacity: 1; transform: translate(-50%, -50%) rotate(0deg) scale(0.4); }
+  100% { opacity: 0; transform: translate(-50%, -50%) rotate(240deg) scale(2.2); }
+}
+
+@keyframes bfBurstHexagon {
+  0% { width: 8px; height: 8px; opacity: 1; transform: translate(-50%, -50%) rotate(0deg); }
+  100% { width: 100px; height: 100px; opacity: 0; transform: translate(-50%, -50%) rotate(180deg); }
+}
+
+@keyframes bfSpark {
+  0% {
+    opacity: 1;
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateX(0px) scale(1);
+  }
+  100% {
+    opacity: 0;
+    transform: translate(-50%, -50%) rotate(var(--angle)) translateX(48px) scale(0.2);
+  }
 }
 
 @keyframes float-slow {
