@@ -93,6 +93,11 @@ export default function Profile() {
                   <BookOpen className="h-3 w-3" /> {subject}
                 </span>
               )}
+              {role === "teacher" && qualification && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/15 text-accent text-xs font-medium">
+                  <GraduationCap className="h-3 w-3" /> {qualification}
+                </span>
+              )}
             </div>
           </div>
         </div>
