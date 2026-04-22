@@ -129,6 +129,28 @@ export default function Batches() {
                   <Users className="h-3 w-3 text-accent" /> {counts[b.id] ?? 0} student{(counts[b.id] ?? 0) !== 1 ? "s" : ""}
                 </div>
               </div>
+              {(studentsByBatch[b.id]?.length ?? 0) > 0 && (
+                <div className="mt-3 space-y-1.5">
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground font-medium">Students</div>
+                  <ul className="space-y-1.5">
+                    {studentsByBatch[b.id]!.map((s) => (
+                      <li key={s.id} className="flex items-center justify-between gap-2 text-sm glass rounded-lg px-2.5 py-1.5">
+                        <span className="truncate font-medium">{s.name}</span>
+                        {s.contact ? (
+                          <a
+                            href={`tel:${s.contact.replace(/\s+/g, "")}`}
+                            className="inline-flex items-center gap-1 text-xs text-accent hover:underline shrink-0"
+                          >
+                            <Phone className="h-3 w-3" /> {s.contact}
+                          </a>
+                        ) : (
+                          <span className="text-xs text-muted-foreground shrink-0">No contact</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           ))}
         </div>
