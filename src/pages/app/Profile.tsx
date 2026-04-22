@@ -52,13 +52,18 @@ export default function Profile() {
       if (role === "student") {
         u.subject = subject || null;
         u.batch_id = batchId || null;
+        u.contact = contact || null;
         // Mirror onto the student record so the rest of the app sees it
         const sr = d.students.find((s) => s.user_id === user.id);
         if (sr) {
           sr.name = name;
           sr.subject = subject || null;
           sr.batch_id = batchId || null;
+          sr.contact = contact || null;
         }
+      }
+      if (role === "teacher") {
+        u.qualification = qualification || null;
       }
     });
     toast.success("Profile updated");
