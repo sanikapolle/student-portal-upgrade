@@ -17,6 +17,15 @@ export default function Batches() {
   const [desc, setDesc] = useState("");
   const [time, setTime] = useState("");
 
+  const studentsByBatch = useMemo(() => {
+    const map: Record<string, typeof db.students> = {};
+    for (const s of db.students) {
+      if (!s.batch_id) continue;
+      (map[s.batch_id] ||= []).push(s);
+    }
+    return map;
+  }, [db.students]);
+
   const counts = useMemo(() => {
     const map: Record<string, number> = {};
     for (const s of db.students) {
