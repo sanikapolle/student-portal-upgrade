@@ -216,6 +216,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
       avatar_url: null,
       subject: role === "student" ? subject ?? null : null,
       batch_id: role === "student" ? batch_id ?? null : null,
+      contact: null,
+      qualification: null,
     };
     update((d) => {
       d.users.push(newUser);
