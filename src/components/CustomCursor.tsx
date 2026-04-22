@@ -5,7 +5,7 @@ import { useEffect, useRef } from "react";
  * grows on interactive elements, and emits a different burst variant on every click.
  * Disabled on touch devices via CSS.
  */
-const BURST_VARIANTS = ["ring", "solid", "star", "square", "double"] as const;
+const BURST_VARIANTS = ["ring", "solid", "star", "square", "double", "triangle", "hexagon", "sparkle"] as const;
 
 export function CustomCursor() {
   const cursorRef = useRef<HTMLDivElement | null>(null);
@@ -69,8 +69,22 @@ export function CustomCursor() {
       burst.className = `bf-burst bf-burst--${variant}`;
       burst.style.left = `${e.clientX}px`;
       burst.style.top = `${e.clientY}px`;
+
+      // Sparkle variant: also spawn 6 radiating particles
+      if (variant === "sparkle") {
+        for (let i = 0; i < 6; i++) {
+          const p = document.createElement("span");
+          p.className = "bf-spark";
+          p.style.left = `${e.clientX}px`;
+          p.style.top = `${e.clientY}px`;
+          p.style.setProperty("--angle", `${i * 60}deg`);
+          document.body.appendChild(p);
+          window.setTimeout(() => p.remove(), 750);
+        }
+      }
+
       document.body.appendChild(burst);
-      window.setTimeout(() => burst.remove(), 750);
+      window.setTimeout(() => burst.remove(), 800);
     };
 
     const up = () => el.classList.remove("is-down");
