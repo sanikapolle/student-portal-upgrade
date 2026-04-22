@@ -11,6 +11,9 @@ export interface UserProfile {
   // Student-only profile fields
   subject: string | null;
   batch_id: string | null;
+  contact: string | null;
+  // Teacher-only profile fields
+  qualification: string | null;
 }
 
 export interface Batch {
