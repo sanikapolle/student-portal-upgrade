@@ -143,6 +143,19 @@ export default function Profile() {
               </p>
             </div>
             <div>
+              <Label>Contact Number</Label>
+              <Input
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                className="glass mt-1.5"
+                placeholder="e.g. +91 98765 43210"
+                maxLength={20}
+              />
+              <p className="text-xs text-muted-foreground mt-1.5">
+                Visible to your teacher in the batch roster.
+              </p>
+            </div>
+            <div>
               <Label>Batch</Label>
               <Select value={batchId} onValueChange={setBatchId}>
                 <SelectTrigger className="glass mt-1.5"><SelectValue placeholder="Pick your batch" /></SelectTrigger>
@@ -152,6 +165,22 @@ export default function Profile() {
               </Select>
             </div>
           </>
+        )}
+
+        {role === "teacher" && (
+          <div>
+            <Label>Qualification</Label>
+            <Input
+              value={qualification}
+              onChange={(e) => setQualification(e.target.value)}
+              className="glass mt-1.5"
+              placeholder="e.g. M.Sc. Physics, B.Ed., 10+ years experience"
+              maxLength={200}
+            />
+            <p className="text-xs text-muted-foreground mt-1.5">
+              Displayed on your profile to showcase your expertise.
+            </p>
+          </div>
         )}
 
         <Button onClick={save} className="gradient-bg text-primary-foreground glow">Save Changes</Button>
