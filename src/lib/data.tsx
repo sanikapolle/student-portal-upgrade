@@ -176,6 +176,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         avatar_url: null,
         subject: role === "student" ? null : null,
         batch_id: role === "student" ? db.batches[0]?.id ?? null : null,
+        contact: null,
+        qualification: null,
       };
       update((d) => {
         d.users.push(existing!);
