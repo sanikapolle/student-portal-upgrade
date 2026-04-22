@@ -4,7 +4,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger, DialogFooter } from "@/components/ui/dialog";
-import { Plus, Pencil, Trash2, Users } from "lucide-react";
+import { Plus, Pencil, Trash2, Users, Phone } from "lucide-react";
 import { toast } from "sonner";
 import { useData, newId, type Batch } from "@/lib/data";
 
@@ -16,6 +16,15 @@ export default function Batches() {
   const [name, setName] = useState("");
   const [desc, setDesc] = useState("");
   const [time, setTime] = useState("");
+
+  const studentsByBatch = useMemo(() => {
+    const map: Record<string, typeof db.students> = {};
+    for (const s of db.students) {
+      if (!s.batch_id) continue;
+      (map[s.batch_id] ||= []).push(s);
+    }
+    return map;
+  }, [db.students]);
 
   const counts = useMemo(() => {
     const map: Record<string, number> = {};
@@ -120,6 +129,28 @@ export default function Batches() {
                   <Users className="h-3 w-3 text-accent" /> {counts[b.id] ?? 0} student{(counts[b.id] ?? 0) !== 1 ? "s" : ""}
                 </div>
               </div>
+              {(studentsByBatch[b.id]?.length ?? 0) > 0 && (
+                <div className="mt-3 space-y-1.5">
+                  <div className="text-xs uppercase tracking-wider text-muted-foreground font-medium">Students</div>
+                  <ul className="space-y-1.5">
+                    {studentsByBatch[b.id]!.map((s) => (
+                      <li key={s.id} className="flex items-center justify-between gap-2 text-sm glass rounded-lg px-2.5 py-1.5">
+                        <span className="truncate font-medium">{s.name}</span>
+                        {s.contact ? (
+                          <a
+                            href={`tel:${s.contact.replace(/\s+/g, "")}`}
+                            className="inline-flex items-center gap-1 text-xs text-accent hover:underline shrink-0"
+                          >
+                            <Phone className="h-3 w-3" /> {s.contact}
+                          </a>
+                        ) : (
+                          <span className="text-xs text-muted-foreground shrink-0">No contact</span>
+                        )}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              )}
             </div>
           ))}
         </div>

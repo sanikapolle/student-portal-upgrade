@@ -15,6 +15,8 @@ export default function Profile() {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [subject, setSubject] = useState("");
   const [batchId, setBatchId] = useState<string>("");
+  const [contact, setContact] = useState("");
+  const [qualification, setQualification] = useState("");
 
   useEffect(() => {
     if (!user) return;
@@ -25,6 +27,10 @@ export default function Profile() {
       // Prefer the linked student record so subject stays in sync everywhere
       setSubject(sr?.subject ?? user.subject ?? "");
       setBatchId(sr?.batch_id ?? user.batch_id ?? "");
+      setContact(sr?.contact ?? user.contact ?? "");
+    }
+    if (role === "teacher") {
+      setQualification(user.qualification ?? "");
     }
   }, [user, role, studentForUser]);
 
@@ -46,13 +52,18 @@ export default function Profile() {
       if (role === "student") {
         u.subject = subject || null;
         u.batch_id = batchId || null;
+        u.contact = contact || null;
         // Mirror onto the student record so the rest of the app sees it
         const sr = d.students.find((s) => s.user_id === user.id);
         if (sr) {
           sr.name = name;
           sr.subject = subject || null;
           sr.batch_id = batchId || null;
+          sr.contact = contact || null;
         }
+      }
+      if (role === "teacher") {
+        u.qualification = qualification || null;
       }
     });
     toast.success("Profile updated");
@@ -80,6 +91,11 @@ export default function Profile() {
               {role === "student" && subject && (
                 <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/15 text-accent text-xs font-medium">
                   <BookOpen className="h-3 w-3" /> {subject}
+                </span>
+              )}
+              {role === "teacher" && qualification && (
+                <span className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-accent/15 text-accent text-xs font-medium">
+                  <GraduationCap className="h-3 w-3" /> {qualification}
                 </span>
               )}
             </div>
@@ -132,6 +148,19 @@ export default function Profile() {
               </p>
             </div>
             <div>
+              <Label>Contact Number</Label>
+              <Input
+                value={contact}
+                onChange={(e) => setContact(e.target.value)}
+                className="glass mt-1.5"
+                placeholder="e.g. +91 98765 43210"
+                maxLength={20}
+              />
+              <p className="text-xs text-muted-foreground mt-1.5">
+                Visible to your teacher in the batch roster.
+              </p>
+            </div>
+            <div>
               <Label>Batch</Label>
               <Select value={batchId} onValueChange={setBatchId}>
                 <SelectTrigger className="glass mt-1.5"><SelectValue placeholder="Pick your batch" /></SelectTrigger>
@@ -141,6 +170,22 @@ export default function Profile() {
               </Select>
             </div>
           </>
+        )}
+
+        {role === "teacher" && (
+          <div>
+            <Label>Qualification</Label>
+            <Input
+              value={qualification}
+              onChange={(e) => setQualification(e.target.value)}
+              className="glass mt-1.5"
+              placeholder="e.g. M.Sc. Physics, B.Ed., 10+ years experience"
+              maxLength={200}
+            />
+            <p className="text-xs text-muted-foreground mt-1.5">
+              Displayed on your profile to showcase your expertise.
+            </p>
+          </div>
         )}
 
         <Button onClick={save} className="gradient-bg text-primary-foreground glow">Save Changes</Button>

@@ -11,6 +11,9 @@ export interface UserProfile {
   // Student-only profile fields
   subject: string | null;
   batch_id: string | null;
+  contact: string | null;
+  // Teacher-only profile fields
+  qualification: string | null;
 }
 
 export interface Batch {
@@ -77,8 +80,8 @@ function seed(): DB {
 
   return {
     users: [
-      { id: teacherId, email: "teacher@batchflow.app", full_name: "Riya Mehta", role: "teacher", avatar_url: null, subject: null, batch_id: null },
-      { id: studentUserId, email: "student@batchflow.app", full_name: "Aanya Kapoor", role: "student", avatar_url: null, subject: "Physics", batch_id: batchA.id },
+      { id: teacherId, email: "teacher@batchflow.app", full_name: "Riya Mehta", role: "teacher", avatar_url: null, subject: null, batch_id: null, contact: null, qualification: "M.Sc. Physics, B.Ed." },
+      { id: studentUserId, email: "student@batchflow.app", full_name: "Aanya Kapoor", role: "student", avatar_url: null, subject: "Physics", batch_id: batchA.id, contact: "+91 98765 43210", qualification: null },
     ],
     batches: [batchA, batchB, batchC],
     students: [
@@ -173,6 +176,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
         avatar_url: null,
         subject: role === "student" ? null : null,
         batch_id: role === "student" ? db.batches[0]?.id ?? null : null,
+        contact: null,
+        qualification: null,
       };
       update((d) => {
         d.users.push(existing!);
@@ -211,6 +216,8 @@ export function DataProvider({ children }: { children: ReactNode }) {
       avatar_url: null,
       subject: role === "student" ? subject ?? null : null,
       batch_id: role === "student" ? batch_id ?? null : null,
+      contact: null,
+      qualification: null,
     };
     update((d) => {
       d.users.push(newUser);
