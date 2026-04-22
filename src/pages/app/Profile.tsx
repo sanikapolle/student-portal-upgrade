@@ -15,6 +15,8 @@ export default function Profile() {
   const [avatarUrl, setAvatarUrl] = useState("");
   const [subject, setSubject] = useState("");
   const [batchId, setBatchId] = useState<string>("");
+  const [contact, setContact] = useState("");
+  const [qualification, setQualification] = useState("");
 
   useEffect(() => {
     if (!user) return;
@@ -25,6 +27,10 @@ export default function Profile() {
       // Prefer the linked student record so subject stays in sync everywhere
       setSubject(sr?.subject ?? user.subject ?? "");
       setBatchId(sr?.batch_id ?? user.batch_id ?? "");
+      setContact(sr?.contact ?? user.contact ?? "");
+    }
+    if (role === "teacher") {
+      setQualification(user.qualification ?? "");
     }
   }, [user, role, studentForUser]);
 
